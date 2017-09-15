@@ -2,14 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* Tested */
 void append_char_to_string(char* string, char character) {
     int len = strlen(string);
     string[len] = character;
     string[len + 1] = '\0';    
 }
 
-/* Tested */
 void spill_into(char* buffer, int * idx_out) {
     /* Convert buffer to int and set as the result of idx_out */
     if (strlen(buffer) != 0) {
@@ -18,7 +16,6 @@ void spill_into(char* buffer, int * idx_out) {
     }
 }
 
-/* Tested */
 void parse(char* str, char* buffer, int * start_out, int * end_out, int * step_out) {
 	int start = 0;
 	int end = 0;
@@ -44,7 +41,6 @@ void parse(char* str, char* buffer, int * start_out, int * end_out, int * step_o
     
     spill_into(buffer, &step);
 
-	/* Spill the rest */
     *start_out = start;
 	*end_out = end;
 	*step_out = step;
@@ -88,8 +84,10 @@ int main(int argc, char * argv[]) {
     char str_to_slice[4096];    
 
 
-    fgets(str_to_slice, 4096, stdin);    
-    str_to_slice[strlen(str_to_slice)] = '\0';
+    fgets(str_to_slice, 4096, stdin);
+    str_to_slice[strcspn(str_to_slice, "\n")] = 0;
+
+    
 	parse(slice_expr, buf, &start, &end, &step);
     slice(str_to_slice, buf, start, end, step);
     printf("%s\n", buf);
