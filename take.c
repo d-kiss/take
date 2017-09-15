@@ -38,9 +38,13 @@ void parse(char* str, char* buffer, int * start_out, int * end_out, int * step_o
 			nekudotayim_index ++;			
 		}
 	}
-    
-    spill_into(buffer, &step);
+    if (nekudotayim_index == 2) {    
+        spill_into(buffer, &step);
+    }
 
+    else if (nekudotayim_index == 1) {    
+        spill_into(buffer, &end);
+    }
     *start_out = start;
 	*end_out = end;
 	*step_out = step;
