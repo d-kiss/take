@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #include <stdlib.h>
 
 void append_char_to_string(char* string, char character) {
@@ -85,7 +86,7 @@ int main(int argc, char * argv[]) {
     int step = 1;
     char buf[256] = "";
 	char* slice_expr = argv[1];
-    char str_to_slice[4096];    
+    char str_to_slice[USHRT_MAX] = "";    
 
     /* TODO: Add support for --by-lines \ -l flag.
      */
