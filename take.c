@@ -2,13 +2,14 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* Tested */
 void append_char_to_string(char* string, char character) {
     int len = strlen(string);
     string[len] = character;
     string[len + 1] = '\0';    
 }
 
-
+/* Tested */
 void spill_into(char* buffer, int * idx_out) {
     /* Convert buffer to int and set as the result of idx_out */
     if (strlen(buffer) != 0) {
@@ -17,7 +18,7 @@ void spill_into(char* buffer, int * idx_out) {
     }
 }
 
-
+/* Tested */
 void parse(char* str, char* buffer, int * start_out, int * end_out, int * step_out) {
 	int start = 0;
 	int end = 0;
@@ -49,8 +50,10 @@ void parse(char* str, char* buffer, int * start_out, int * end_out, int * step_o
 	*step_out = step;
 }
 
-void slice(void* arr, int length, int start, int end, int step) { 
+
+void slice(char* str, char* buf, int start, int end, int step) { 
     
+    int length = strlen(str);
     /* Allow negative indexes */
     if (start < 0) {
         start += length;
@@ -60,14 +63,19 @@ void slice(void* arr, int length, int start, int end, int step) {
         end += length;
     }
     
-
-
+    int buffers_running_index = 0;
     if (step > 0) {
-
+        for (int i = start; i < end; i += step) {
+            buf[buffers_running_index++] = str[i];
+        }
     }
     else {
-        /* TODO: Implement this part. */
+       for (int i = end - 1; i >= start; i += step) {
+            buf[buffers_running_index++] = str[i];
+       }
     }
+
+    buf[buffers_running_index] = '\0';
 }
 
 
@@ -77,8 +85,13 @@ int main(int argc, char * argv[]) {
     int step = 1;
     char buf[256] = "";
 	char* slice_expr = argv[1];
+    char str_to_slice[4096];    
 
+
+    fgets(str_to_slice, 4096, stdin);    
+    str_to_slice[strlen(str_to_slice)] = '\0';
 	parse(slice_expr, buf, &start, &end, &step);
-    
+    slice(str_to_slice, buf, start, end, step);
+    printf("%s\n", buf);
 	return 0;
 }
