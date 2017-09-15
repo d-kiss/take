@@ -83,8 +83,12 @@ int main(int argc, char * argv[]) {
 	char* slice_expr = argv[1];
     char str_to_slice[4096];    
 
+    /* TODO: Add support for --by-lines \ -l flag.
+     */
 
     fgets(str_to_slice, 4096, stdin);
+    /* FIXME: This currently deletes all text after the first newline,
+     * it should delete only the last newline*/
     str_to_slice[strcspn(str_to_slice, "\n")] = 0;
 
     
