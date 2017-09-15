@@ -89,12 +89,9 @@ int main(int argc, char * argv[]) {
 
     /* TODO: Add support for --by-lines \ -l flag.
      */
-
-    fgets(str_to_slice, 4096, stdin);
-    /* FIXME: This currently deletes all text after the first newline,
-     * it should delete only the last newline*/
-    str_to_slice[strcspn(str_to_slice, "\n")] = 0;
-
+    
+    scanf("%[^\t]", str_to_slice);
+    str_to_slice[strlen(str_to_slice) - 1] = '\0';
     
 	parse(slice_expr, buf, &start, &end, &step);
     slice(str_to_slice, buf, start, end, step);
