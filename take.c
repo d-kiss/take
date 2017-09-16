@@ -21,29 +21,29 @@ void parse(char* str, char* buffer, int * start_out, int * end_out, int * step_o
 	int start = 0;
 	int end = 0;
 	int step = 1;
-	int nekudotayim_index = 0;	
+	int colon_index = 0;	
 
 	for (int i=0; i<strlen(str); i++) {
 		if  (str[i] != ':') {
 			append_char_to_string(buffer, str[i]);
 		}
 		else {
-			if (nekudotayim_index == 0) {
+			if (colon_index == 0) {
 				spill_into(buffer, &start);
 			}
 
-			if (nekudotayim_index == 1) {
+			if (colon_index == 1) {
 				spill_into(buffer, &end);
 			}			
 			
-			nekudotayim_index ++;			
+			colon_index ++;			
 		}
 	}
-    if (nekudotayim_index == 2) {    
+    if (colon_index == 2) {    
         spill_into(buffer, &step);
     }
 
-    else if (nekudotayim_index == 1) {    
+    else if (colon_index == 1) {    
         spill_into(buffer, &end);
     }
     *start_out = start;
