@@ -87,15 +87,29 @@ int main(int argc, char * argv[]) {
     char buf[256] = "";
 	char* slice_expr = argv[1];
     char str_to_slice[USHRT_MAX] = "";    
-
-    /* TODO: Add support for --by-lines \ -l flag.
-     */
     
     scanf("%[^\t]", str_to_slice);
-    str_to_slice[strlen(str_to_slice) - 1] = '\0';
-    
-	parse(slice_expr, buf, &start, &end, &step);
-    slice(str_to_slice, buf, start, end, step);
+    if (argc == 2) { 
+        str_to_slice[strlen(str_to_slice) - 1] = '\0'; 
+	    parse(slice_expr, buf, &start, &end, &step);
+        slice(str_to_slice, buf, start, end, step);
+    }
+
+    // a --by-lines (or -l) flag was supplied.
+    else if (argc == 3) { 
+        if (!(argv[2] == "--by-lines" || argv[2] == "-l" || 
+              argv[3] == "--by-lines" || argv[3] == "-l")) {
+            printf("Unparsable command.\n");
+            return 2;
+        }
+       
+    }
+
+    else {
+        printf("Illegal number of arguments supplied.\n");
+        return 1;
+    }
+
     printf("%s\n", buf);
 	return 0;
 }
