@@ -10,7 +10,7 @@ take - easily slice and substring text.
 
 ##### EXAMPLES
 
-| Tables        | Are           | 
+| command | output           | 
 | ------------- |:-------------:| 
 | echo "Hello" \| take :       | Hello | 
 | echo "Hello" \| take \::-1        | olleH      | 
