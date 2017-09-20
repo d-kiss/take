@@ -5,26 +5,30 @@ take \- easily slice and substring text.
 .B take
 [\fB\-l\fR]
 [\fB\-\-by\-lines\fR]
+[\fB\-w\fR]
+[\fB\-\-with\-delimiter\fR]
 .IR start:stop:step
 .SH DESCRIPTION
 .B take 
 slices a string using a start index (inclusive), stop index (exclusive) and step size
 .SH EXAMPLE
 .IP \[bu] 2
-echo "Hello" | take :                 # returns "Hello
+echo "Hello" | take :                         # returns "Hello
 .IP \[bu] 
-echo "Hello" | take ::-1              # returns "olleH"
+echo "Hello" | take ::-1                      # returns "olleH"
 .IP \[bu]
-echo "Hello" | take 1:3               # returns "el"
+echo "Hello" | take 1:3                       # returns "el"
 .IP \[bu] 
-echo "Hello" | take :-1:              # returns "Hell"
+echo "Hello" | take :-1:                      # returns "Hell"
 .IP \[bu]
-echo "Hello" | take -3:-1             # returns "ll"
+echo "Hello" | take -3:-1                     # returns "ll"
 .IP \[bu]
-echo "Hello" | take ::2               # returns "Hlo"
+echo "Hello" | take ::2                       # returns "Hlo"
 .IP \[bu]
-echo "Hello\\nWorld\\n" | take -l 1::   # returns "World"
+echo "Hello\\nWorld\\n" | take -l 1::           # returns "World"
 .IP \[bu]
-echo "Hello\\nWorld\\n" | take -l 0     # returns "Hello"
+echo "Hello\\nWorld\\n" | take -l 0             # returns "Hello"
 .IP \[bu]
-echo "Hello" | take  1                # returns "e"
+echo "Goodbye\\nCruel\\nWorld" | take -l -w 1:  # returns "Cruel\nWorld"
+.IP \[bu]
+echo "Goodbye\\nCruel\\nWorld" | take -l -w 2:  # returns "World"

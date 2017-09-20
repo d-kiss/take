@@ -2,7 +2,7 @@
 ##### NAME
 take - easily slice and substring text.
 ##### SYNOPSIS
-**take** [**-l** | **--by-lines**] _start:stop:end_
+**take** [**-l** | **--by-lines**] [**-w** | **--with-delimiter**]_start:stop:end_
 
 ##### DECRIPTION
 **take** slices a string read from stdin (mostly for use with pipes) by using a start-index (inclusive), stop index (exclusive) and a step size, very much python-like.
@@ -21,3 +21,6 @@ take - easily slice and substring text.
 | echo "Hello" \| take 1 |  e     | 
 | echo "Hello\nWorld\n" \| take -l 1: |  World     | 
 | echo "Hello\nWorld\n" \| take -l :1 |  Hello     | 
+| echo "Hello\nCruel\nWorld\n" \| take -l -w 1: |  Hello\nCruel   | 
+| echo "Hello\nCruel\nWorld\n" \| take -l 1: |  HelloCruel   | 
+| echo "Hello\nCruel\nWorld\n" \| take -l -w 2: |  World   | 
