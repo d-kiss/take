@@ -96,7 +96,8 @@ void split_by(char* str, char* delimiter, char* array[], int * length_out) {
     *length_out = i;
 }
 
-void line_slice(char* str, char* buf, char* delimiter, int start, int end, int step) 
+void line_slice(char* str, char* buf, char* delimiter, 
+                int start, int end, int step, int include_delimiter) 
 {
     int length;
     char* array[USHRT_MAX];
@@ -117,16 +118,30 @@ void line_slice(char* str, char* buf, char* delimiter, int start, int end, int s
         for (int i = start; i < end; i += step) {
             for(int j = 0; j < strlen(array[i]); j++) {
                 buf[buffers_running_index++] = array[i][j];
-
+            } 
+            if (include_delimiter == true) {
+                if (i != end - 1) {
+                    for(int j = 0; j < strlen(delimiter); j++) {
+                        buf[buffers_running_index++] = delimiter[j];
+                    }
+                }
             }
         }
         buf[buffers_running_index] = '\0';
     }
+
     else {
         for (int i = end - 1; i >= start; i += step) {
             for(int j = 0; j < strlen(array[i]); j++) {
                 buf[buffers_running_index++] = array[i][j];
 
+            }
+            if (include_delimiter == true) {
+                if (i != end - 1) {
+                    for(int j = 0; j < strlen(delimiter); j++) {
+                        buf[buffers_running_index++] = delimiter[j];
+                    }
+                }
             }
         }
         buf[buffers_running_index] = '\0';
@@ -144,6 +159,13 @@ int contains(int argc, char* argv[] , char* contained) {
     return false;
 }
 
+char * slice_expression(int argc, char* argv[]) {
+    for (int i = 0; i < argc; i++) { 
+        if (strstr(argv[i], ":") != NULL){
+            return argv[i];
+        }
+    }
+}
 
 int main(int argc, char * argv[]) {
     int start = 0;
@@ -151,25 +173,24 @@ int main(int argc, char * argv[]) {
     int step = 1;
     char buf[USHRT_MAX] = "";
     char str_to_slice[USHRT_MAX] = "";    
-    
 
     scanf("%[^\t]", str_to_slice);
+    char* slice_expr = slice_expression(argc, argv); 
+    parse(slice_expr, buf, &start, &end, &step);
 
     if (contains(argc, argv, "--by-line") || contains(argc, argv, "-l"))
-    { 
-        char* slice_expr = argv[2]; 
-        parse(slice_expr, buf, &start, &end, &step);   
-        line_slice(str_to_slice, buf, "/", start, end, step);
-        printf("%s\n", buf);
-        return 0;
+    {
+        int with_delimiter = contains(argc, argv, "--with-delimiter" ) || 
+                             contains (argc, argv, "-w");
+        line_slice(str_to_slice, buf, "/", start, end, step, with_delimiter);
     }
 
     else {
-        char* slice_expr = argv[1]; 
-        parse(slice_expr, buf, &start, &end, &step);
         str_to_slice[strlen(str_to_slice) - 1] = '\0'; 
         slice(str_to_slice, buf, start, end, step);
-        printf("%s\n", buf);
-        return 0;
     }
+
+    
+    printf("%s\n", buf);
+    return 0;
 }
