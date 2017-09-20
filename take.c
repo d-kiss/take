@@ -137,7 +137,7 @@ void line_slice(char* str, char* buf, char* delimiter,
 
             }
             if (include_delimiter == true) {
-                if (i != end - 1) {
+                if (i != start) {
                     for(int j = 0; j < strlen(delimiter); j++) {
                         buf[buffers_running_index++] = delimiter[j];
                     }
