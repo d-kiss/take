@@ -89,10 +89,7 @@ void split_by(char* str, char* delimiter, char* array[], int * length_out) {
     array[i] = strtok(str, delimiter);
     while(array[i] != NULL) { array[++i] = strtok(NULL, delimiter); }
     
-    /*  above loop returns a trailing newline, let's get rid of it. */
-    char* last_word = array[i - 1];
-    array[i - 1][strlen(last_word) - 1] = '\0';
-
+   /*  does above loop returns a trailing newline? */
     *length_out = i;
 }
 
