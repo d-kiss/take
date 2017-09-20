@@ -22,27 +22,27 @@ void spill_into(char* buffer, int * idx_out) {
 }
 
 void parse(char* str, char* buffer, int * start_out, int * end_out, int * step_out) {
-	int start = 0;
-	int end = 0;
-	int step = 1;
-	int colon_index = 0;	
+    int start = 0;
+    int end = 0;
+    int step = 1;
+    int colon_index = 0;    
 
-	for (int i=0; i<strlen(str); i++) {
-		if  (str[i] != ':') {
-			append_char_to_string(buffer, str[i]);
-		}
-		else {
-			if (colon_index == 0) {
-				spill_into(buffer, &start);
-			}
+    for (int i=0; i<strlen(str); i++) {
+        if  (str[i] != ':') {
+            append_char_to_string(buffer, str[i]);
+        }
+        else {
+            if (colon_index == 0) {
+                spill_into(buffer, &start);
+            }
 
-			if (colon_index == 1) {
-				spill_into(buffer, &end);
-			}			
-			
-			colon_index ++;			
-		}
-	}
+            if (colon_index == 1) {
+                spill_into(buffer, &end);
+            }            
+            
+            colon_index ++;            
+        }
+    }
     if (colon_index == 2) {    
         spill_into(buffer, &step);
     }
@@ -51,8 +51,8 @@ void parse(char* str, char* buffer, int * start_out, int * end_out, int * step_o
         spill_into(buffer, &end);
     }
     *start_out = start;
-	*end_out = end;
-	*step_out = step;
+    *end_out = end;
+    *step_out = step;
 }
 
 
@@ -146,7 +146,7 @@ int contains(int argc, char* argv[] , char* contained) {
 
 
 int main(int argc, char * argv[]) {
-	int start = 0;
+    int start = 0;
     int end = 0;
     int step = 1;
     char buf[USHRT_MAX] = "";
@@ -165,7 +165,7 @@ int main(int argc, char * argv[]) {
     }
 
     else {
-    	char* slice_expr = argv[1]; 
+        char* slice_expr = argv[1]; 
         parse(slice_expr, buf, &start, &end, &step);
         str_to_slice[strlen(str_to_slice) - 1] = '\0'; 
         slice(str_to_slice, buf, start, end, step);
