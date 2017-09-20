@@ -121,7 +121,7 @@ void line_slice(char* str, char* buf, char* delimiter, int start, int end, int s
         buf[buffers_running_index] = '\0';
     }
     else {
-        for (int i = end - 1; i <= start; i += step) {
+        for (int i = end - 1; i >= start; i += step) {
             for(int j = 0; j < strlen(array[i]); j++) {
                 buf[buffers_running_index++] = array[i][j];
 
