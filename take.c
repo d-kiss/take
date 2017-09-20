@@ -87,7 +87,7 @@ void slice(char* str, char* buf, int start, int end, int step) {
 void split_by(char* str, char* delimiter, char* array[], int * length_out) { 
     int i = 0;  
     array[i] = strtok(str, delimiter);
-    while(array[i] != NULL) { array[++i] = strtok(NULL,"/"); }
+    while(array[i] != NULL) { array[++i] = strtok(NULL, delimiter); }
     
     /*  above loop returns a trailing newline, let's get rid of it. */
     char* last_word = array[i - 1];
@@ -180,9 +180,11 @@ int main(int argc, char * argv[]) {
 
     if (contains(argc, argv, "--by-line") || contains(argc, argv, "-l"))
     {
+	char delimiter[2] = "\0";
+	delimiter[0] = 10;
         int with_delimiter = contains(argc, argv, "--with-delimiter" ) || 
                              contains (argc, argv, "-w");
-        line_slice(str_to_slice, buf, "/", start, end, step, with_delimiter);
+        line_slice(str_to_slice, buf, delimiter, start, end, step, with_delimiter);
     }
 
     else {
