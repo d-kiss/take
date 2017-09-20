@@ -3,6 +3,8 @@
 #include <limits.h>
 #include <stdlib.h>
 
+#define NEWLINE "\n"
+
 void append_char_to_string(char* string, char character) {
     int len = strlen(string);
     string[len] = character;
@@ -80,6 +82,20 @@ void slice(char* str, char* buf, int start, int end, int step) {
 }
 
 
+void line_slice(char* str, char* buf, int start, int end, int step) 
+{
+    int length = 0;
+    if (start < 0) {
+        start += length;
+    }
+
+    if (end <= 0) {
+        end += length;
+    }
+
+}
+
+
 int main(int argc, char * argv[]) {
 	int start = 0;
     int end = 0;
@@ -89,20 +105,26 @@ int main(int argc, char * argv[]) {
     char str_to_slice[USHRT_MAX] = "";    
     
     scanf("%[^\t]", str_to_slice);
-    if (argc == 2) { 
+	parse(slice_expr, buf, &start, &end, &step);
+
+    if (argc == 2) {
         str_to_slice[strlen(str_to_slice) - 1] = '\0'; 
-	    parse(slice_expr, buf, &start, &end, &step);
         slice(str_to_slice, buf, start, end, step);
     }
 
     // a --by-lines (or -l) flag was supplied.
-    else if (argc == 3) { 
-        if (!(argv[2] == "--by-lines" || argv[2] == "-l" || 
-              argv[3] == "--by-lines" || argv[3] == "-l")) {
-            printf("Unparsable command.\n");
-            return 2;
+    else if (argc == 3) {
+        char* by_lines = "--by-lines";
+        char* l = "-l";
+        if (!(strcmp(argv[2], by_lines) == 0 || strcmp(argv[1], by_lines) == 0 || 
+              strcmp(argv[2], l) == 0        || strcmp(argv[1], l) == 0 )) {
+            printf("Unknown flag supplied. use 'man take'.\n");
+            return 1;
         }
-       
+        
+        line_slice(str_to_slice, buf, start, end, step);
+
+
     }
 
     else {
