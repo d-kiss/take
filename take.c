@@ -82,9 +82,25 @@ void slice(char* str, char* buf, int start, int end, int step) {
 }
 
 
-void line_slice(char* str, char* buf, int start, int end, int step) 
+void split_by(char* str, char* delimiter, char* array[], int * length_out) { 
+    int i = 0;  
+    array[i] = strtok(str, delimiter);
+    while(array[i] != NULL) { array[++i] = strtok(NULL,"/"); }
+    
+    /*  above loop returns a trailing newline, let's get rid of it. */
+    char* last_word = array[i - 1];
+    array[i - 1][strlen(last_word) - 1] = '\0';
+
+    *length_out = i;
+}
+
+void line_slice(char* str, char* buf, char* delimiter, int start, int end, int step) 
 {
-    int length = 0;
+    int length;
+    char* array[USHRT_MAX];
+
+    split_by(str, delimiter, array, &length);
+
     if (start < 0) {
         start += length;
     }
@@ -92,6 +108,28 @@ void line_slice(char* str, char* buf, int start, int end, int step)
     if (end <= 0) {
         end += length;
     }
+
+    int buffers_running_index = 0;
+    
+    if (step > 0) {
+        for (int i = start; i < end; i += step) {
+            for(int j = 0; j < strlen(array[i]); j++) {
+                buf[buffers_running_index++] = array[i][j];
+
+            }
+        }
+        buf[buffers_running_index] = '\0';
+    }
+    else {
+        for (int i = end - 1; i <= start; i += step) {
+            for(int j = 0; j < strlen(array[i]); j++) {
+                buf[buffers_running_index++] = array[i][j];
+
+            }
+        }
+        buf[buffers_running_index] = '\0';
+    }
+
 
 }
 
@@ -101,15 +139,17 @@ int main(int argc, char * argv[]) {
     int end = 0;
     int step = 1;
     char buf[256] = "";
-	char* slice_expr = argv[1];
+	char* slice_expr = argv[1];  // TODO: whoops.
     char str_to_slice[USHRT_MAX] = "";    
     
     scanf("%[^\t]", str_to_slice);
 	parse(slice_expr, buf, &start, &end, &step);
 
+
     if (argc == 2) {
         str_to_slice[strlen(str_to_slice) - 1] = '\0'; 
         slice(str_to_slice, buf, start, end, step);
+        printf("%s\n", buf);
     }
 
     // a --by-lines (or -l) flag was supplied.
@@ -122,8 +162,8 @@ int main(int argc, char * argv[]) {
             return 1;
         }
         
-        line_slice(str_to_slice, buf, start, end, step);
-
+        line_slice(str_to_slice, buf, "/", start, end, step);
+        printf("%s\n", buf);
 
     }
 
@@ -132,6 +172,5 @@ int main(int argc, char * argv[]) {
         return 1;
     }
 
-    printf("%s\n", buf);
 	return 0;
 }
