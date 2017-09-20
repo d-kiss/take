@@ -4,6 +4,8 @@
 #include <stdlib.h>
 
 #define NEWLINE "\n"
+#define true (1==1)
+#define false (!true)
 
 void append_char_to_string(char* string, char character) {
     int len = strlen(string);
@@ -133,44 +135,41 @@ void line_slice(char* str, char* buf, char* delimiter, int start, int end, int s
 
 }
 
+int contains(int argc, char* argv[] , char* contained) { 
+    for (int i = 0; i < argc; i ++) { 
+        if (strstr(argv[i], contained) != NULL) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 int main(int argc, char * argv[]) {
 	int start = 0;
     int end = 0;
     int step = 1;
-    char buf[256] = "";
-	char* slice_expr = argv[1];  // TODO: whoops.
+    char buf[USHRT_MAX] = "";
     char str_to_slice[USHRT_MAX] = "";    
     
+
     scanf("%[^\t]", str_to_slice);
-	parse(slice_expr, buf, &start, &end, &step);
 
-
-    if (argc == 2) {
-        str_to_slice[strlen(str_to_slice) - 1] = '\0'; 
-        slice(str_to_slice, buf, start, end, step);
-        printf("%s\n", buf);
-    }
-
-    // a --by-lines (or -l) flag was supplied.
-    else if (argc == 3) {
-        char* by_lines = "--by-lines";
-        char* l = "-l";
-        if (!(strcmp(argv[2], by_lines) == 0 || strcmp(argv[1], by_lines) == 0 || 
-              strcmp(argv[2], l) == 0        || strcmp(argv[1], l) == 0 )) {
-            printf("Unknown flag supplied. use 'man take'.\n");
-            return 1;
-        }
-        
+    if (contains(argc, argv, "--by-line") || contains(argc, argv, "-l"))
+    { 
+        char* slice_expr = argv[2]; 
+        parse(slice_expr, buf, &start, &end, &step);   
         line_slice(str_to_slice, buf, "/", start, end, step);
         printf("%s\n", buf);
-
+        return 0;
     }
 
     else {
-        printf("Illegal number of arguments supplied.\n");
-        return 1;
+    	char* slice_expr = argv[1]; 
+        parse(slice_expr, buf, &start, &end, &step);
+        str_to_slice[strlen(str_to_slice) - 1] = '\0'; 
+        slice(str_to_slice, buf, start, end, step);
+        printf("%s\n", buf);
+        return 0;
     }
-
-	return 0;
 }
