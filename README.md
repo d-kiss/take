@@ -15,7 +15,7 @@ take - easily slice and substring text.
 | echo "Hello" \| take :       | Hello | 
 | echo "Hello" \| take \::-1        | olleH      | 
 | echo "Hello" \| take 1:3 |  el     | 
-| echo "Hello" \| take \:-1\:  |  Hell     | 
+| echo "Hello" \| take : -1:  |  Hell     | 
 | echo "Hello" \| take -3:-1 |  ll     | 
 | echo "Hello" \| take ::2 |  Hlo     | 
 | echo "Hello" \| take 1 |  e     | 
